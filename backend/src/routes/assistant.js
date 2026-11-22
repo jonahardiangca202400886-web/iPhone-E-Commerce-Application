@@ -89,13 +89,21 @@ ${JSON.stringify(products)}
     });
 
   } catch (error) {
-    console.error("Gemini assistant error:", error.message);
+  console.error("Gemini assistant error:", error.message);
 
-    return res.status(503).json({
-      success: false,
-      message: "The Gemini recommendation assistant is temporarily unavailable."
-    });
-  }
+  const isOverloaded =
+    error.status === 503 ||
+    error.message?.includes("503") ||
+    error.message?.includes("UNAVAILABLE");
+
+  return res.status(isOverloaded ? 503 : 500).json({
+    success: false,
+    message: isOverloaded
+      ? "Gemini is currently busy. Please try again shortly."
+      : "The AI assistant encountered an error."
+  });
+}
+
 }
 
 router.post("/", recommendProducts);
