@@ -1,52 +1,3 @@
-<<<<<<< HEAD
-import express from "express";
-import { GoogleGenAI } from "@google/genai";
-
-const router = express.Router();
-
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY
-});
-
-router.post("/", async (req, res) => {
-  try {
-    const { message } = req.body;
-
-    if (!message || typeof message !== "string") {
-      return res.status(400).json({
-        success: false,
-        message: "Please enter a message."
-      });
-    }
-
-    if (message.length > 1000) {
-      return res.status(400).json({
-        success: false,
-        message: "Message is too long."
-      });
-    }
-
-    const result = await ai.models.generateContent({
-      model: process.env.GEMINI_MODEL || "gemini-2.5-flash",
-      contents: `You are the iPhoneHub AI assistant. Help customers with iPhone product questions.
-
-Customer: ${message}`
-    });
-
-    res.json({
-      success: true,
-      data: {
-        reply: result.text
-      }
-    });
-
-  } catch (error) {
-    console.error("Gemini error:", error.message);
-
-    res.status(503).json({
-      success: false,
-      message: "AI assistant is temporarily unavailable."
-=======
 import { Router } from "express";
 import OpenAI from "openai";
 import { db } from "../config/supabase.js";
@@ -109,13 +60,7 @@ router.post("/recommend", async (req, res) => {
   } catch {
     res.status(503).json({
       success: false, error: { code: "AI_UNAVAILABLE", message: "The recommendation assistant is temporarily unavailable." }
->>>>>>> e88e146f8d582a06312e40d2253bffe15f07a553
+
     });
   }
 });
-
-<<<<<<< HEAD
-export default router;
-=======
-export default router;
->>>>>>> e88e146f8d582a06312e40d2253bffe15f07a553
