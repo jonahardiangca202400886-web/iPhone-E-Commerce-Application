@@ -42,3 +42,23 @@ app.use((err, _req, res, _next) => {
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`iPhoneHub API running on http://localhost:${port}`));
+
+const allowedOrigins = (
+  process.env.FRONTEND_ORIGINS ||
+  "http://localhost:5173,http://localhost:5175"
+)
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS origin not allowed"));
+    },
+  })
+);
