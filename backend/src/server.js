@@ -45,20 +45,20 @@ app.listen(port, () => console.log(`iPhoneHub API running on http://localhost:${
 
 const allowedOrigins = (
   process.env.FRONTEND_ORIGINS ||
-  "http://localhost:5173,http://localhost:5175"
+  "http://localhost:5173,http://localhost:5174,http://localhost:5175"
 )
   .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
+  .map(origin => origin.trim());
 
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin || allowedOrigins.includes(origin)) {
-        return callback(null, true);
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
       }
-
-      return callback(new Error("CORS origin not allowed"));
     },
+    credentials: true
   })
 );
