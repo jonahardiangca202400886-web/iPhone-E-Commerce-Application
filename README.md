@@ -58,6 +58,7 @@ Health check: `http://localhost:5000/api/v1/health`
 | GET | `/api/v1/health` | Public |
 | GET | `/api/v1/products` | Public |
 | GET | `/api/v1/products/:id` | Public |
+| GET | `/api/v1/auth/me` | Signed-in customer |
 | POST | `/api/v1/admin/products` | Admin |
 | PATCH | `/api/v1/admin/products/:id` | Admin |
 | POST | `/api/v1/admin/variants/:id/stock` | Admin |

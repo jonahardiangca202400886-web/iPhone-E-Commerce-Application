@@ -1,8 +1,40 @@
 
 import { Router } from "express";
 import { db } from "../config/supabase.js";
+import { requireAuth } from "../middleware/auth.js";
 
 const router = Router();
+
+router.get("/me", requireAuth, async (req, res) => {
+  const { data, error } = await db
+    .from("profiles")
+    .select("full_name,role")
+    .eq("id", req.user.id)
+    .maybeSingle();
+
+  if (error) {
+    return res.status(500).json({
+      success: false,
+      error: { code: "PROFILE_LOOKUP_FAILED", message: "Could not load account profile." }
+    });
+  }
+  if (!data) {
+    return res.status(404).json({
+      success: false,
+      error: { code: "PROFILE_NOT_FOUND", message: "Account profile is not available." }
+    });
+  }
+
+  return res.json({
+    success: true,
+    data: {
+      id: req.user.id,
+      email: req.user.email,
+      full_name: data.full_name,
+      role: data.role
+    }
+  });
+});
 
 // REGISTER
 router.post("/register", async (req, res) => {
