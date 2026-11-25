@@ -55,6 +55,7 @@ Health check: `http://localhost:5000/api/v1/health`
 
 | Method | Endpoint | Access |
 |---|---|---|
+| GET | `/` | Public API welcome and health-check link |
 | GET | `/api/v1/health` | Public |
 | GET | `/api/v1/products` | Public |
 | GET | `/api/v1/products/:id` | Public |

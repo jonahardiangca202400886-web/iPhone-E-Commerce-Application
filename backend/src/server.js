@@ -50,6 +50,15 @@ app.use(rateLimit({
   limit: 200
 }));
 
+app.get("/", (_req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: "Welcome to iPhoneHub API!",
+    status: "Server is running",
+    healthCheck: "/api/v1/health"
+  });
+});
+
 // 5. Health check
 app.get("/api/v1/health", (_req, res) => {
   res.json({
